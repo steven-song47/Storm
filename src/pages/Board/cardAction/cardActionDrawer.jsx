@@ -268,9 +268,9 @@ class ActionDrawer extends Component {
         }
     }
 
-    // 用于子组件（edit）后更新currentCases的数据
+    // 用于子组件case table中数据更新后（import、add、edit），更新currentCases的数据
     updateCaseData = (data) => {
-        console.log("update case data:", data);
+        // console.log("update case data:", data);
         this.setState({
             currentCases: data,
         });
@@ -297,7 +297,7 @@ class ActionDrawer extends Component {
                "when": cases[i]["when"],
                "then": cases[i]["then"],
                "effect": cases[i]["effect"]? cases[i]["effect"]: "active",
-               "review": cases[i]["review"]? cases[i]["review"]: "Created",
+               "review": cases[i]["review"]? cases[i]["review"]: "created",
                "result": cases[i]["result"]? cases[i]["result"]: "Created",
                "creator": cases[i]["creator"]? cases[i]["creator"]: "",
                "card": cases[i]["card"],

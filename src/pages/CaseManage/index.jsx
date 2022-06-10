@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { Button, Upload, Drawer, Tag,  message } from 'antd';
 import ProTable, { TableDropdown, EditableProTable } from '@ant-design/pro-table';
 import ProForm, { ProFormText, ProFormSelect, ProFormRadio, ProFormTextArea } from '@ant-design/pro-form';
-import { CloudUploadOutlined, CloudDownloadOutlined, CloudOutlined, CloudServerOutlined } from '@ant-design/icons';
+import { CloudUploadOutlined, CloudDownloadOutlined, CloudOutlined, CloudServerOutlined, EditTwoTone, DeleteTwoTone, } from '@ant-design/icons';
 import { searchCases, uploadExcelData, updateCase, fileCase, exportFiledCase } from '@/services/ant-design-pro/api';
 import * as XLSX from 'xlsx';
 import ExportJsonExcel from 'js-export-excel';
 
+const excel_filter = ["id", "name", "module", "given", "when", "then", "review", "level", "tag", "auto", "result", "card", "script", "bug", "creator"];
+const excel_header = ["ID", "Name", "Module", "Given", "When", "Then", "Review", "Level", "Tag", "Auto", "Last Result", "Card", "Script", "Bug", "Creator"];
 
 class CaseManage extends Component {
     
@@ -42,9 +44,9 @@ class CaseManage extends Component {
     deleteCase = async (record) => {
         const msg = await fileCase({id: record.id});
         if (msg.success === true) {
-            message.success("归档成功");
+            message.success("File case success");
         } else {
-            message.error("归档失败");
+            message.error("File case fail");
         }
     }
 
@@ -90,8 +92,8 @@ class CaseManage extends Component {
             {
                 sheetData: dataTable,
                 sheetName: 'Case List',
-                sheetFilter: ["id", "case", "level", "tag", "state", "card", "auto", "creator"],
-                sheetHeader: ["ID", "Case Content", "Level", "Tag", "Test Result", "Card Index", "Automation", "Creator"],
+                sheetFilter: excel_filter,
+                sheetHeader: excel_header,
             }
         ]
         let toExcel = new ExportJsonExcel(options);
@@ -107,8 +109,8 @@ class CaseManage extends Component {
             {
                 sheetData: dataTable,
                 sheetName: 'Case List',
-                sheetFilter: ["id", "case", "level", "tag", "state", "card", "auto", "creator"],
-                sheetHeader: ["ID", "Case Content", "Level", "Tag", "Test Result", "Card Index", "Automation", "Creator"],
+                sheetFilter: excel_filter,
+                sheetHeader: excel_header,
             }
         ]
         let toExcel = new ExportJsonExcel(options);
@@ -125,8 +127,8 @@ class CaseManage extends Component {
             {
                 sheetData: dataTable,
                 sheetName: 'Case List',
-                sheetFilter: ["id", "case", "level", "tag", "state", "card", "auto", "creator"],
-                sheetHeader: ["ID", "Case Content", "Level", "Tag", "Test Result", "Card Index", "Automation", "Creator"],
+                sheetFilter: excel_filter,
+                sheetHeader: excel_header,
             }
         ]
         let toExcel = new ExportJsonExcel(options);
@@ -224,7 +226,7 @@ class CaseManage extends Component {
                 key: 'name',
                 copyable: true,
                 hideInSearch: true,
-                width: 100,
+                width: 150,
                 fixed: 'left',
             },
             {
@@ -232,6 +234,7 @@ class CaseManage extends Component {
                 dataIndex: 'module',
                 key: 'module',
                 hideInSearch: true,
+                width: 150,
             },
             {
                 title: 'Case content',
@@ -241,21 +244,21 @@ class CaseManage extends Component {
                         dataIndex: 'given',
                         key: 'given',
                         hideInSearch: true,
-                        width: 150,
+                        width: 250,
                     },
                     {
                         title: 'When',
                         dataIndex: 'when',
                         key: 'when',
                         hideInSearch: true,
-                        width: 200,
+                        width: 250,
                     },
                     {
                         title: 'Then',
                         dataIndex: 'then',
                         key: 'then',
                         hideInSearch: true,
-                        width: 200,
+                        width: 250,
                     },
                 ]
             },
@@ -264,30 +267,44 @@ class CaseManage extends Component {
                 dataIndex: 'review',
                 key: 'review',
                 hideInSearch: true,
+                width: 150,
             },
             {
                 title: 'Level',
                 dataIndex: 'level',
                 key: 'level',
                 hideInSearch: true,
+                width: 100,
             },
             {
                 title: 'Tag',
                 dataIndex: 'tag',
                 key: 'tag',
                 hideInSearch: true,
+                width: 200,
+                render: (tags) => [
+                    <>
+                        {tags.split(",").map(tag => (
+                            <Tag color="green" key={tag}>
+                                {tag}
+                            </Tag>
+                        ))}
+                    </>
+                ]
             },
             {
                 title: 'Auto',
                 dataIndex: 'auto',
                 key: 'auto',
                 hideInSearch: true,
+                width: 100,
             },
             {
                 title: 'Result',
                 dataIndex: 'result',
                 key: 'result',
                 hideInSearch: true,
+                width: 150,
             },
             {
                 title: 'Case associated',
@@ -297,7 +314,16 @@ class CaseManage extends Component {
                         dataIndex: 'card',
                         key: 'card',
                         hideInSearch: true,
-                        width: 150,
+                        width: 200,
+                        render: (cards) => [
+                            <>
+                                {cards.split(",").map(card => (
+                                    <Tag key={card}>
+                                        {card}
+                                    </Tag>
+                                ))}
+                            </>
+                        ]
                     },
                     {
                         title: 'Script',
@@ -316,15 +342,32 @@ class CaseManage extends Component {
                 ]
             },
             {
+                title: 'Create Time',
+                key: 'create_time',
+                dataIndex: 'create_time',
+                valueType: 'dateTime',
+                sorter: true,
+                hideInSearch: true,
+                width: 200,
+            },
+            {
+                title: 'Update Time',
+                key: 'update_time',
+                dataIndex: 'update_time',
+                valueType: 'dateTime',
+                sorter: true,
+                hideInSearch: true,
+            },
+            {
                 title: 'Action',
                 valueType: 'option',
                 fixed: 'right',
                 width: 100,
                 render: (text, record, _, action) => [
-                    <a href="javascript:;" key="edit" onClick={() => editModal(record)}>
+                    <a href="javascript:;" key="edit" onClick={this.showEditDrawer.bind(this, record)}>
                         <EditTwoTone />
                     </a>,
-                    <a href="javascript:;" key="file" >
+                    <a href="javascript:;" key="file" onClick={this.deleteCase.bind(this, record)} >
                         <DeleteTwoTone />
                     </a>,
                 ],
@@ -347,6 +390,7 @@ class CaseManage extends Component {
                         persistenceType: 'localStorage',
                     }} 
                     rowKey="id" 
+                    scroll={{ x: 2900, }}
                     search={{
                         labelWidth: 'auto',
                     }} 
@@ -366,7 +410,7 @@ class CaseManage extends Component {
                     headerTitle="Test Case Management" 
                     toolBarRender={() => [
                         <Button key="sample" icon={<CloudOutlined />} onClick={this.downModelFile} type="primary">
-                            下载模版
+                            Download Modal
                         </Button>,
                         <Upload
                             name="excel"
@@ -375,14 +419,14 @@ class CaseManage extends Component {
                             accept=".xls,.xlsx"
                         >
                             <Button key="import" icon={<CloudUploadOutlined />} type="primary">
-                            导入Case
+                            Import Case
                             </Button>
                         </Upload>,
                         <Button key="export" icon={<CloudDownloadOutlined />} onClick={this.downloadFile} type="primary">
-                            导出Case
+                            Export Case
                         </Button>,
                         <Button key="export" icon={<CloudServerOutlined />} onClick={this.exportFileCases} type="primary">
-                            导出归档Case
+                            Export File Case
                         </Button>,
                     ]}
                 />
