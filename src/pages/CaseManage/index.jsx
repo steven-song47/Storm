@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Upload, Drawer, Tag,  message } from 'antd';
+import { Button, Upload, Drawer, Tag, Divider, message } from 'antd';
 import ProTable, { TableDropdown, EditableProTable } from '@ant-design/pro-table';
 import ProForm, { ProFormText, ProFormSelect, ProFormRadio, ProFormTextArea } from '@ant-design/pro-form';
 import { CloudUploadOutlined, CloudDownloadOutlined, CloudOutlined, CloudServerOutlined, EditTwoTone, DeleteTwoTone, } from '@ant-design/icons';
@@ -136,88 +136,6 @@ class CaseManage extends Component {
     }
 
     render() {
-
-        // const columns = [
-        //     {
-        //         title: 'ID',
-        //         dataIndex: 'id',
-        //         hideInSearch: true,
-        //         width: '5%',
-        //     },
-        //     {
-        //         title: 'Case Content',
-        //         dataIndex: 'case',
-        //         copyable: true,
-        //         hideInSearch: true,
-        //         width: '20%',
-        //     },
-        //     {
-        //         title: 'Level',
-        //         dataIndex: 'level',
-        //         width: '5%',
-        //     },
-        //     {
-        //         title: 'Tag',
-        //         dataIndex: 'tag',
-        //         width: '10%',
-        //         render: (tags) => [
-        //             <>
-        //                 {tags.map(tag => (
-        //                     <Tag color="green" key={tag}>
-        //                         {tag}
-        //                     </Tag>
-        //                 ))}
-        //             </>
-        //         ]
-        //     },
-        //     {
-        //         title: 'Test Result',
-        //         dataIndex: 'state',
-        //         hideInSearch: true,
-        //         width: '10%',
-        //     },
-        //     {
-        //         title: 'Card Index',
-        //         dataIndex: 'card',
-        //         width: '10%',
-        //     },
-        //     {
-        //         title: 'Automation',
-        //         dataIndex: 'auto',
-        //         width: '5%',
-        //     },
-        //     {
-        //         title: 'Create Time',
-        //         key: 'create_time',
-        //         dataIndex: 'create_time',
-        //         valueType: 'dateTime',
-        //         sorter: true,
-        //         hideInSearch: true,
-        //         width: '10%',
-        //     },
-        //     {
-        //         title: 'Update Time',
-        //         key: 'update_time',
-        //         dataIndex: 'update_time',
-        //         valueType: 'dateTime',
-        //         sorter: true,
-        //         hideInSearch: true,
-        //         width: '10%',
-        //     },
-        //     {
-        //         title: '操作',
-        //         valueType: 'option',
-        //         width: '15%',
-        //         render: (text, record, _, action) => [
-        //             <a href="javascript:;" key="edit" onClick={this.showEditDrawer.bind(this, record)} >
-        //                 Edit
-        //             </a>,
-        //             <a href="javascript:;" key="file" onClick={this.deleteCase.bind(this, record)} >
-        //                 File
-        //             </a>,
-        //         ],
-        //     },
-        // ];
 
         const columns = [
             {
@@ -431,13 +349,107 @@ class CaseManage extends Component {
                     ]}
                 />
                 <Drawer 
-                    title="Edit This Case"
+                    title="Edit Case"
                     placement="right" 
                     width="600"
                     onClose={this.closeEditDrawer}
                     visible={this.state.newDrawer}
                 >
                     <ProForm
+                        onFinish={async (values) => {
+                            console.log(values);
+                            await updateCase(values);
+                            message.success("Edit Success");
+                        }}
+                        // formRef={formRef}
+                        formkey="edit-case"
+                        grid={true}
+                        request={() => {
+                            return {
+                                id: this.state.editData.id,
+                                name: this.state.editData.name,
+                                module: this.state.editData.module,
+                                given: this.state.editData.given,
+                                when: this.state.editData.when,
+                                then: this.state.editData.then,
+                                level: this.state.editData.level,
+                                auto: this.state.editData.auto,
+                                tag: this.state.editData.tag,
+                                result: this.state.editData.state,
+                                review: this.state.editData.review,
+                                card: this.state.editData.card,
+                            };
+                        }}
+                        key={this.state.editData.id}
+                    >
+                        <Divider orientation="left" plain>Basic Infomation</Divider>
+                        <ProFormText name="id" label="ID" disabled/>
+                        <ProFormText name="name" label="Name" colProps={{ xl:6 }} rules={[{ required: true, message: 'This is a request field' }]}/>
+                        <ProFormText name="module" label="Module" colProps={{ xl:12 }} rules={[{ required: true, message: 'This is a request field' }]}/>
+                        <ProForm.Group>
+                            <ProFormSelect 
+                                name="level"
+                                label="Level"
+                                rules={[{ required: true, message: 'This is a request field' }]}
+                                options={[
+                                    {
+                                        value: 1,
+                                        label: 1,
+                                    },
+                                    {
+                                        value: 2,
+                                        label: 2,
+                                    },
+                                    {
+                                        value: 3,
+                                        label: 3,
+                                    },
+                                    {
+                                        value: 4,
+                                        label: 4,
+                                    },
+                                ]}
+                            />
+                            <ProFormText name="tag" label="Tag" />
+                            <ProFormRadio.Group 
+                                name="auto" 
+                                label="Automation" 
+                                radioType="button"
+                                options={[
+                                    {
+                                        label: "Y",
+                                        value: "Y",
+                                    },
+                                    {
+                                        label: "N",
+                                        value: "N",
+                                    },
+                                ]}
+                            />
+                        </ProForm.Group>
+                        <Divider orientation="left" plain>Step Information</Divider>
+                        <ProFormTextArea name="given" label="Case - Given" rules={[{ required: true, message: 'This is a request field' }]} />
+                        <ProFormTextArea name="when" label="Case - When" rules={[{ required: true, message: 'This is a request field' }]} />
+                        <ProFormTextArea name="then" label="Case - Then" rules={[{ required: true, message: 'This is a request field' }]} />
+                        <Divider orientation="left" plain>Associated Information</Divider>
+                        <ProFormSelect 
+                            name="card"
+                            label="Associated Card"
+                            disabled
+                            mode="multiple"
+                        />
+                        <ProFormSelect 
+                            name="script"
+                            label="Associated Script"
+                        />
+                        <ProFormSelect 
+                            name="bug"
+                            label="Associated Bug"
+                            mode="multiple"
+                        />
+                        <br />
+                    </ProForm>
+                    {/* <ProForm
                         onFinish={async (values) => {
                             console.log(values);
                             await updateCase(values);
@@ -448,12 +460,18 @@ class CaseManage extends Component {
                         request={() => {
                             return {
                                 id: this.state.editData.id,
-                                case: this.state.editData.case,
+                                name: this.state.editData.name,
+                                module: this.state.editData.module,
+                                given: this.state.editData.given,
+                                when: this.state.editData.when,
+                                then: this.state.editData.then,
                                 level: this.state.editData.level,
-                                result: this.state.editData.state,
-                                tag: this.state.editData.tag.toString(),
-                                card: this.state.editData.card,
                                 auto: this.state.editData.auto,
+                                tag: this.state.editData.tag,
+                                result: this.state.editData.state,
+                                review: this.state.editData.review,
+                                card: this.state.editData.card,
+                                
                                 creator: this.state.editData.creator,
                             };
                         }}
@@ -502,7 +520,7 @@ class CaseManage extends Component {
                             ]}
                         />
                         <ProFormText name="creator" label="Creator" />
-                    </ProForm>
+                    </ProForm> */}
                 </Drawer>
             </div>
         );
