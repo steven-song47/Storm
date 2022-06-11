@@ -1,12 +1,13 @@
 import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react';
-import { Alert, Modal, Table, message } from 'antd';
+import { Alert, Modal, Table, Tag, message } from 'antd';
 // import ProForm, { ProFormSelect, ProFormTextArea, ProFormText, ProFormRadio } from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
+import { searchCases } from '@/services/ant-design-pro/api';
 
 
 function ImportCaseModel(props, ref){
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [data, setData] = useState();
+    const [data, setData] = useState([]);
 
     useImperativeHandle(ref, () => ({
         data,
@@ -21,10 +22,12 @@ function ImportCaseModel(props, ref){
 
     const handleOk = () => {
         setIsModalVisible(false);
+        props.updateCase(data);
     };
 
     const handleCancel = () => {
         setIsModalVisible(false);
+        setData([]);
     };
 
     const columns = [
@@ -32,67 +35,85 @@ function ImportCaseModel(props, ref){
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            copyable: true,
-            hideInSearch: true,
             width: 100,
-            fixed: 'left',
         },
         {
             title: 'Module',
             dataIndex: 'module',
             key: 'module',
-            hideInSearch: true,
+            width: 100,
         },
         {
             title: 'Given',
             dataIndex: 'given',
             key: 'given',
-            hideInSearch: true,
             width: 150,
         },
         {
             title: 'When',
             dataIndex: 'when',
             key: 'when',
-            hideInSearch: true,
             width: 200,
         },
         {
             title: 'Then',
             dataIndex: 'then',
             key: 'then',
-            hideInSearch: true,
             width: 200,
         },
         {
             title: 'Review',
             dataIndex: 'review',
             key: 'review',
-            hideInSearch: true,
+            width: 100,
         },
         {
             title: 'Level',
             dataIndex: 'level',
             key: 'level',
-            hideInSearch: true,
+            width: 100
         },
         {
             title: 'Tag',
             dataIndex: 'tag',
             key: 'tag',
-            hideInSearch: true,
+            width: 150,
+            render: (tags) => [
+                <>
+                    {tags.split(",").map(tag => (
+                        <Tag color="green" key={tag}>
+                            {tag}
+                        </Tag>
+                    ))}
+                </>
+            ],
         },
         {
             title: 'Auto',
             dataIndex: 'auto',
             key: 'auto',
-            hideInSearch: true,
+            width: 100,
         },
         {
-            title: 'Result',
-            dataIndex: 'result',
-            key: 'result',
-            hideInSearch: true,
+            title: 'Card',
+            dataIndex: 'card',
+            key: 'card',
+            width: 100,
+            render: (cards) => [
+                <>
+                    {cards.split(",").map(card => (
+                        <Tag key={card}>
+                            {card}
+                        </Tag>
+                    ))}
+                </>
+            ],
+        },
+        {
+            title: 'Script',
+            dataIndex: 'script',
+            key: 'script',
+            width: 100,
         },
     ]
     
@@ -109,29 +130,40 @@ function ImportCaseModel(props, ref){
                 type="warning"
                 closable
             />
-            <ProTable
+            <ProTable 
                 key={props.index}
+                columns={columns}
                 rowKey="id"
                 scroll={{ x:1000, y: 200 }}
                 options={false}
-                columns={columns}
+                search={false}
+                request={async (params={}, sort, filter) => {
+                    const msg = await searchCases(params);
+                    return {data: msg.data}
+                }}
                 rowSelection={{
                     selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
                     defaultSelectedRowKeys: [1],
                     onChange: (selectedRowKeys, selectedRows) => {
-                        console.log(selectedRows);
-                        // this.setState({
-                        //     importCases: selectedRows,
-                        // });
+                        var import_data = [];
+                        for (let i=0; i<selectedRows.length; i++) {
+                            var current_case = {...selectedRows[i]};
+                            var origin_card = current_case.card;
+                            if (origin_card) {
+                                var card_list = origin_card.split(",");
+                                if (!card_list.includes(props.index.toString())) {
+                                    card_list.push(props.index.toString());
+                                    current_case.card = card_list.join(",");
+                                    import_data.push(current_case);
+                                }
+                            } else {
+                                current_case.card = props.index.toString();
+                                import_data.push(current_case);
+                            }
+                        }
+                        setData(import_data);
                     }
                 }}
-                request={async (params={}, sort, filter) => {
-                    // const msg = await searchCases(params);
-                    // await this.setState({
-                    //     tableData: msg.data,
-                    // });
-                    // return {data: msg.data}
-                }} 
             />
         </Modal>
     </>);

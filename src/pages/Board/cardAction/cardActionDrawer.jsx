@@ -287,12 +287,12 @@ class ActionDrawer extends Component {
         var current_cases = this.state.currentCases;
         for (let i=0; i<cases.length; i++) {
             current_cases.push({
-               "id": (Math.random() * 1000000000).toFixed(0),
+               "id": cases[i]["id"]? cases[i]["id"]: (Math.random() * 1000000000).toFixed(0),
                "name": cases[i]["name"],
                "module": cases[i]["module"],
                "level": cases[i]["level"],
-               "tag": cases[i]["tag"],
-               "auto": cases[i]["auto"],
+               "tag": cases[i]["tag"]? cases[i]["tag"]: "",
+               "auto": cases[i]["auto"]? cases[i]["auto"]: "N",
                "given": cases[i]["given"],
                "when": cases[i]["when"],
                "then": cases[i]["then"],
