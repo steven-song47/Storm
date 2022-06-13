@@ -14,8 +14,6 @@ function EditableTable(props) {
     const [editableKeys, setEditableRowKeys] = useState([]);
     const [dataSource, setDataSource] = useState(props.data);
 
-    const case_level = [1,2,3,4];
-    const case_state = ["Created", "Passed", "Failed"];
     const risk_level = ["High", "Medium", "Low"];
     const risk_state = ["Created", "Solved", "Ignored"];
     const task_state = ["Created", "Completed", "Ignored"];
@@ -39,61 +37,6 @@ function EditableTable(props) {
         })
         return valueEnum;
     }
-
-    const case_columns = [
-        {
-            title: 'Description',
-            key: 'case',
-            dataIndex: 'case',
-            width: '50%',
-        },
-        {
-            title: 'Level',
-            key: 'level',
-            dataIndex: 'level',
-            valueType: 'select',
-            width: '10%',
-            valueEnum: selectOptions(case_level)
-        },
-        {
-            title: 'Auto',
-            key: 'auto',
-            dataIndex: 'auto',
-            valueType: 'select',
-            width: '10%',
-            valueEnum: {
-                Y: {
-                    text: "Y",
-                    status: "Y",
-                },
-                N: {
-                    text: "N",
-                    status: "N",
-                },
-            }
-        },
-        {
-            title: 'State',
-            key: 'state',
-            dataIndex: 'state',
-            valueType: 'select',
-            width: '15%',
-            valueEnum: selectOptions(case_state)
-        },
-        {
-            title: 'Action',
-            valueType: 'option',
-            width: '15%',
-            render: (text, record, _, action) => [
-                <a key="editable" onClick={() => {
-                    var _a;
-                    (_a = action.startEditable) === null || _a === void 0 ? void 0 : _a.call(action, record.id);
-                }}>
-                    Edit
-                </a>,
-            ],
-        },
-    ];
 
     const risk_columns = [
         {
@@ -203,9 +146,7 @@ function EditableTable(props) {
 
     const chooseColumns = () => {
         const type = props.type;
-        if (type === "case") {
-            return case_columns;
-        } else if (type === "risk") {
+        if (type === "risk") {
             return risk_columns;
         } else if (type === "bug") {
             return bug_columns;

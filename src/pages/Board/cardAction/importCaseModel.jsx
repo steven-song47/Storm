@@ -78,14 +78,15 @@ function ImportCaseModel(props, ref){
             dataIndex: 'tag',
             key: 'tag',
             width: 150,
-            render: (tags) => [
+            render: (tags) => [tags!='-'?
                 <>
                     {tags.split(",").map(tag => (
                         <Tag color="green" key={tag}>
                             {tag}
                         </Tag>
                     ))}
-                </>
+                </>:
+                <></>
             ],
         },
         {
@@ -101,10 +102,10 @@ function ImportCaseModel(props, ref){
             width: 100,
             render: (cards) => [
                 <>
-                    {cards.split(",").map(card => (
+                    {cards.split(",").map(card => (cards!='-'?
                         <Tag key={card}>
                             {card}
-                        </Tag>
+                        </Tag>:<></>
                     ))}
                 </>
             ],

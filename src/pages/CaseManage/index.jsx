@@ -200,15 +200,16 @@ class CaseManage extends Component {
                 key: 'tag',
                 hideInSearch: true,
                 width: 200,
-                render: (tags) => [
-                    <>
-                        {tags.split(",").map(tag => (
-                            <Tag color="green" key={tag}>
-                                {tag}
-                            </Tag>
-                        ))}
-                    </>
-                ]
+                render: (tags) => [tags!='-'?
+                <>
+                    {tags.split(",").map(tag => (
+                        <Tag color="green" key={tag}>
+                            {tag}
+                        </Tag>
+                    ))}
+                </>:
+                <></>
+            ],
             },
             {
                 title: 'Auto',
@@ -233,14 +234,14 @@ class CaseManage extends Component {
                         key: 'card',
                         hideInSearch: true,
                         width: 200,
-                        render: (cards) => [
+                        render: (cards) => [cards!='-'?
                             <>
                                 {cards.split(",").map(card => (
                                     <Tag key={card}>
                                         {card}
                                     </Tag>
                                 ))}
-                            </>
+                            </>:<></>
                         ]
                     },
                     {

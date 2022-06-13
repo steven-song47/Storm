@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
-import { Divider, Modal, message } from 'antd';
+import { Divider, Modal, message, Tag } from 'antd';
 import ProForm, { ProFormSelect, ProFormTextArea, ProFormText, ProFormRadio } from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
 
@@ -9,6 +9,8 @@ function CaseTable(props) {
     const [dataSource, setDataSource] = useState([...props.data]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editCase, setEditCase] = useState();
+
+    const formRef = useRef();
 
     // const showEditModal = () => {
     //     setIsModalVisible(true);
@@ -20,6 +22,9 @@ function CaseTable(props) {
 
     const handleOk = () => {
         setIsModalVisible(false);
+        const data = formRef.current.getFieldsFormatValue();
+        updateDataSource(data);
+        console.log("get data:", data);
     };
 
     const handleCancel = () => {
@@ -27,8 +32,6 @@ function CaseTable(props) {
     };
 
     const editModal = (record) => {
-        console.log("edit case:", record);
-        // showEditModal();
         setIsModalVisible(true);
         setEditCase(record);
     };
@@ -117,6 +120,17 @@ function CaseTable(props) {
             dataIndex: 'tag',
             key: 'tag',
             hideInSearch: true,
+            width: 150,
+            render: (tags) => [tags!='-'?
+                <>
+                    {tags.split(",").map(tag => (
+                        <Tag color="green" key={tag}>
+                            {tag}
+                        </Tag>
+                    ))}
+                </>:
+                <></>
+            ],
         },
         {
             title: 'Auto',
@@ -139,9 +153,9 @@ function CaseTable(props) {
                 <a href="javascript:;" key="edit" onClick={() => editModal(record)}>
                     <EditTwoTone />
                 </a>,
-                <a href="javascript:;" key="file" >
-                    <DeleteTwoTone />
-                </a>,
+                // <a href="javascript:;" key="file" >
+                //     <DeleteTwoTone />
+                // </a>,
             ],
         },
     ]
@@ -168,17 +182,12 @@ function CaseTable(props) {
             visible={isModalVisible}
             width={1000}
             key={editCase? editCase.id:0}
-            footer={null}
+            onOk={handleOk}
+            onCancel={handleCancel}
         >
             <ProForm
-                onFinish={async (values) => {
-                    console.log(values);
-                    setIsModalVisible(false);
-                    updateDataSource(values);    
-                    // await updateCase(values);
-                    message.success("Edit Success");
-                }}
-                // formRef={formRef}
+                formRef={formRef}
+                submitter={false}
                 formkey="edit-case"
                 grid={true}
                 request={() => {
@@ -197,35 +206,36 @@ function CaseTable(props) {
                 // key={this.state.editData.id}
             >
                 <Divider orientation="left" plain>Basic Infomation</Divider>
-                <ProForm.Group>
-                    <ProFormText name="name" label="Name" colProps={{ xl:6 }} rules={[{ required: true, message: 'This is a request field' }]}/>
-                    <ProFormText name="module" label="Module" colProps={{ xl:12 }} rules={[{ required: true, message: 'This is a request field' }]}/>
+                <ProForm.Group >
+                    <ProFormText name="name" label="Name" width="lg" rules={[{ required: true, message: 'This is a request field' }]}/>
+                    <ProFormText name="module" label="Module" width="lg" rules={[{ required: true, message: 'This is a request field' }]}/>
                 </ProForm.Group>
                 <ProForm.Group>
                     <ProFormSelect 
                         name="level"
                         label="Level"
+                        width="md"
                         rules={[{ required: true, message: 'This is a request field' }]}
                         options={[
                             {
                                 value: 1,
-                                label: 1,
+                                label: 'P0',
                             },
                             {
                                 value: 2,
-                                label: 2,
+                                label: 'P1',
                             },
                             {
                                 value: 3,
-                                label: 3,
+                                label: 'P2',
                             },
                             {
                                 value: 4,
-                                label: 4,
+                                label: 'P3',
                             },
                         ]}
                     />
-                    <ProFormText name="tag" label="Tag" />
+                    <ProFormText name="tag" label="Tag" width="lg"/>
                     <ProFormRadio.Group 
                         name="auto" 
                         label="Automation" 

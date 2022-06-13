@@ -171,14 +171,6 @@ class ActionDrawer extends Component {
         }
     }
 
-    // updateCardCase = async (data) => {
-    //     await this.setState({
-    //         // tmpCase: data,
-    //         currentCases: data,
-    //     });
-    //     console.log("after edit, currentCases: ", this.state.currentCases);
-    // }
-
     updateCardRisk = async (data) => {
         this.setState({
             tmpRisk: data,
@@ -270,7 +262,6 @@ class ActionDrawer extends Component {
 
     // 用于子组件case table中数据更新后（import、add、edit），更新currentCases的数据
     updateCaseData = (data) => {
-        // console.log("update case data:", data);
         this.setState({
             currentCases: data,
         });
@@ -312,44 +303,6 @@ class ActionDrawer extends Component {
     openImportCaseModal = () => {
         this.importCaseRef.current.showImportModal();
     }
-
-    // showCaseModal = () => {
-    //     this.setState({
-    //         isModalVisible: true,
-    //         checkboxTable: Date.now(),
-    //     });
-    // }
-
-    // handleModalOK = () => {
-    //     this.setState({
-    //         isModalVisible: false,
-    //         changeCaseTableKey: Date.now(),
-    //     });
-    //     var cases = this.state.currentCases;
-    //     var import_cases = this.state.importCases;
-    //     const prev_case_length = cases.length;
-    //     for (let i=0; i<import_cases.length; i++) {
-    //         cases.push({
-    //            "auto": import_cases[i]["auto"],
-    //            "case": import_cases[i]["case"],
-    //            "id": (Math.random() * 1000000000).toFixed(0),
-    //            "index": prev_case_length + i,
-    //            "level": import_cases[i]["level"],
-    //            "state": "Created",
-    //         });
-    //     }
-    //     // this.setState({
-    //     //     currentCases: cases,
-    //     // });
-    //     // 【遗留问题】为什么这里setState不是异步的呢？currentCases数据发生更新了（跟数据拷贝有关吗？是浅拷贝？）-- 【已解决】就是浅拷贝
-    //     console.log("after modal, currentCases:", this.state.currentCases)
-    // }
-
-    // handleModalCancel = () => {
-    //     this.setState({
-    //         isModalVisible: false,
-    //     });
-    // }
 
     render() {
 
@@ -444,44 +397,6 @@ class ActionDrawer extends Component {
                 )
             }
         }
-
-        // const caseColumns = [
-        //     {
-        //         title: 'ID',
-        //         dataIndex: 'id',
-        //         hideInSearch: true,
-        //         width: '10%',
-        //     },
-        //     {
-        //         title: 'Case Content',
-        //         dataIndex: 'case',
-        //         copyable: true,
-        //         hideInSearch: true,
-        //         width: '40%',
-        //     },
-        //     {
-        //         title: 'Level',
-        //         dataIndex: 'level',
-        //         hideInSearch: true,
-        //         width: '10%',
-        //     },
-        //     {
-        //         title: 'Test Result',
-        //         dataIndex: 'state',
-        //         hideInSearch: true,
-        //         width: '15%',
-        //     },
-        //     {
-        //         title: 'Card Index',
-        //         dataIndex: 'card',
-        //         width: '15%',
-        //     },
-        //     {
-        //         title: 'Auto',
-        //         dataIndex: 'auto',
-        //         width: '10%',
-        //     },
-        // ]
 
         return (
             <div>
@@ -632,43 +547,6 @@ class ActionDrawer extends Component {
                                 index={this.state.openCardData.index}
                                 updateCase={this.updateCaseTable}
                             />
-                            {/* <Modal 
-                                title="Import Historical Cases"
-                                visible={this.state.isModalVisible}
-                                onOk={this.handleModalOK}
-                                onCancel={this.handleModalCancel}
-                                width={1000}
-                            >
-                                <Alert
-                                    message="Imported historical cases are counted as creating new cases based on the historical cases."
-                                    type="warning"
-                                    closable
-                                />
-                                <ProTable
-                                    key={this.state.checkboxTable}
-                                    rowKey="id"
-                                    scroll={{ y: 200 }}
-                                    options={false}
-                                    columns={caseColumns}
-                                    rowSelection={{
-                                        selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
-                                        defaultSelectedRowKeys: [1],
-                                        onChange: (selectedRowKeys, selectedRows) => {
-                                            console.log(selectedRows);
-                                            this.setState({
-                                                importCases: selectedRows,
-                                            });
-                                        }
-                                    }}
-                                    request={async (params={}, sort, filter) => {
-                                        const msg = await searchCases(params);
-                                        await this.setState({
-                                            tableData: msg.data,
-                                        });
-                                        return {data: msg.data}
-                                    }} 
-                                />
-                            </Modal> */}
                         </ProCard>
                         <ProCard colSpan={12}>
                             <Divider orientation="left">Quality Risk</Divider>
