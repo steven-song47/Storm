@@ -50,7 +50,7 @@ function CaseTable(props) {
             auto: values.auto,
             card: values.card,
             creator: editCase.creator,
-            result: editCase.result,
+            result: values.result,
             effect: editCase.effect,
             review: editCase.review,
             create_time: editCase.create_time,
@@ -201,6 +201,7 @@ function CaseTable(props) {
                         when: editCase.when,
                         then: editCase.then,
                         card: props.index,
+                        result: editCase.result,
                     };
                 }}
                 // key={this.state.editData.id}
@@ -250,6 +251,29 @@ function CaseTable(props) {
                                 value: "N",
                             },
                         ]}
+                    />
+                </ProForm.Group>
+                <Divider orientation="left" plain>Case Testing</Divider>
+                <ProForm.Group>
+                    <ProFormRadio.Group
+                        name="result"
+                        label="Testing Result"
+                        radioType="button"
+                        options={[
+                            {
+                                label: "Created",
+                                value: "Created",
+                            },
+                            {
+                                label: "Passed",
+                                value: "Passed",
+                            },
+                            {
+                                label: "Failed",
+                                value: "Failed",
+                            }
+                        ]}
+                        
                     />
                 </ProForm.Group>
                 <Divider orientation="left" plain>Step Information</Divider>
