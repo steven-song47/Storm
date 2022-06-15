@@ -29,7 +29,7 @@ class Dashboard extends Component {
             currentSprint: sprints.data[0],
             sprints: sprints.data,
         });
-        console.log("currentSprint: ", this.state.currentSprint);
+        // console.log("currentSprint: ", this.state.currentSprint);
         const msg = await basicData({sprint: this.state.currentSprint});
         await this.setState({
             basicInfo: msg.data,
@@ -49,6 +49,13 @@ class Dashboard extends Component {
     }
 
     onChange = async (value) => {
+        await this.setState({
+            currentSprint: value
+        });
+        const msg = await basicData({sprint: this.state.currentSprint});
+        await this.setState({
+            basicInfo: msg.data,
+        });
     }
 
     render() {

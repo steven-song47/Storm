@@ -12,6 +12,7 @@ class CreateSprintDrawer extends Component {
         this.state = {
             visibleDrawer: false,
             techMembers: [],
+            newSprint: "",
         };
         this.formRef = React.createRef();
     }
@@ -34,18 +35,7 @@ class CreateSprintDrawer extends Component {
         this.setState({
             visibleDrawer: false,
         });
-        // this.props.refresh();
-        // this.clearEditableTable();
-    }
-
-    // 用来清空可编辑表格的数据缓存
-    clearEditableTable = () => {
-        this.setState({
-            openCardData: {
-                "state": "create",
-                "index": 0
-            }
-        });
+        this.props.refresh(this.state.newSprint);
     }
 
     render() {
@@ -82,6 +72,9 @@ class CreateSprintDrawer extends Component {
                             onFinish={async (value) => {
                                 const msg = await createSprint({...value})
                                 message.success('提交成功');
+                                this.setState({
+                                    newSprint: value.name,
+                                })
                             }}
                             formProps={{
                                 validateMessages: {

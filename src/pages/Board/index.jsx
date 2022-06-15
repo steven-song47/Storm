@@ -38,18 +38,21 @@ class Board extends Component {
             currentSprint: sprints.data[0],
             sprints: sprints.data,
         });
-        console.log("currentSprint: ", this.state.currentSprint)
         const msg = await board({sprint: this.state.currentSprint});
         await this.setState({
             cards: msg.data,
         });
     }
 
-    // onRef = (ref) => {
-    //     this.ActionDrawer = ref;
-    // }
+    showSelectSprints = async () => {
+        const sprints = await getSprints();
+        await this.setState({
+            sprints: sprints.data,
+        });
+    }
 
     selectOptions = () => {
+        console.log("111")
         var options = [];
         var sprintList = [...this.state.sprints];
         sprintList&&sprintList.map((sprint) => 
@@ -84,7 +87,12 @@ class Board extends Component {
         this.CreateSprintDrawer.current.showCreateDrawer();
     }
 
-    refreshBoard = async () => {
+    refreshBoard = async (sprint="") => {
+        if (sprint) {
+            await this.setState({
+                currentSprint: sprint,
+            });
+        }
         const msg = await board({sprint: this.state.currentSprint});
         await this.setState({
             cards: msg.data,
@@ -156,6 +164,7 @@ class Board extends Component {
                                     defaultValue={this.state.currentSprint}
                                     onChange={this.onChange}
                                     options={this.selectOptions()}
+                                    onDropdownVisibleChange={this.showSelectSprints}
                                 />
                             </Form.Item>
                             <Form.Item >
@@ -172,7 +181,7 @@ class Board extends Component {
                 </ProCard>
                 <ActionDrawer ref={this.ActionDrawer} refresh={this.refreshBoard} />
                 <AddDrawer ref={this.AddDrawer} refresh={this.refreshBoard} sprint={this.state.currentSprint} />
-                <CreateSprintDrawer ref={this.CreateSprintDrawer} />
+                <CreateSprintDrawer ref={this.CreateSprintDrawer} refresh={this.refreshBoard} />
             </div>  
         )
     }
