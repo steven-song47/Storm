@@ -74,6 +74,7 @@ class ActionDrawer extends Component {
             openCardData: msg.data,
             cardDev: msg.data.dev,
             cardQA: msg.data.qa,
+            cardAC: msg.data.ac,
             currentState: msg.data.state,
             saveButton: false,
             currentCases: msg.data.case,
