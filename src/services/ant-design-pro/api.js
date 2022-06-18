@@ -91,55 +91,6 @@ export async function showCardDetail(params) {
   });
 }
 
-// 迭代统计 IterativeStatistical
-export async function chartPoint(params) {
-  let url = CONFIG.CHART_POINTS;
-  return request(url, {
-    method: 'GET',
-    params: {...params},
-  });
-}
-
-export async function chartCard(params) {
-  let url = CONFIG.CHART_CARDS;
-  return request(url, {
-    method: 'GET',
-    params: {...params},
-  });
-}
-
-export async function chartCardGroup(params) {
-  let url = CONFIG.CHART_CARD_GROUP;
-  return request(url, {
-    method: 'GET',
-    params: {...params},
-  });
-}
-
-export async function chartBug(params) {
-  let url = CONFIG.CHART_BUGS;
-  return request(url, {
-    method: 'GET',
-    params: {...params},
-  });
-}
-
-export async function chartCase(params) {
-  let url = CONFIG.CHART_CASES;
-  return request(url, {
-    method: 'GET',
-    params: {...params},
-  });
-}
-
-export async function showSprint(params) {
-  let url = CONFIG.SHOW_SPRINT;
-  return request(url, {
-    method: 'GET',
-    params: {...params},
-  });
-}
-
 // case管理 CaseManage
 export async function searchCases(params) {
   // 查询cases
@@ -308,6 +259,22 @@ export async function createSprint(params) {
   let url = CONFIG.CREATE_SPRINT;
   return post(url, {
       params: {...params},
+  });
+}
+
+export async function judgeSprintName(params) {
+  let url = CONFIG.JUDGE_SPRINT;
+  return request(url, {
+    method: 'GET',
+    params: {...params},
+  });
+}
+
+export async function judgeCardIndex(params) {
+  let url = CONFIG.JUDGE_INDEX;
+  return request(url, {
+    method: 'GET',
+    params: {...params},
   });
 }
 

@@ -6,13 +6,6 @@ export const SWITCH_STATE = '/api/project/switchCardState';
 export const SHOW_DETAIL = '/api/project/showDetail';
 export const GET_MEMBERS = '/api/project/getMembers';
 
-export const CHART_POINTS = '/api/chart/point';
-export const CHART_CARDS = '/api/chart/card';
-export const CHART_CARD_GROUP = '/api/chart/cardGroup';
-export const CHART_BUGS = '/api/chart/bug';
-export const CHART_CASES = '/api/chart/case';
-export const SHOW_SPRINT = '/api/chart/sprint';
-
 export const SEARCH_CASE = '/api/case/searchCases';
 export const UPLOAD_EXCEL = '/api/case/uploadExcel';
 export const UPDATE_CASE = '/api/case/updateCase';
@@ -38,6 +31,8 @@ export const OPERATE_LOG = '/api/board/showOperateLog';
 export const UPDATE_CARD = '/api/board/updateCard';
 export const CREATE_CARD = '/api/board/createCard';
 export const CREATE_SPRINT = '/api/board/createSprint';
+export const JUDGE_SPRINT = '/api/board/judgeSprintName';
+export const JUDGE_INDEX = '/api/board/judgeCardIndex';
 
 export const DASHBOARD_BASIC = '/api/dashboard/dashboard';
 export const MEMBER_POINT_CHART = '/api/dashboard/memberPoints';

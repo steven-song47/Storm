@@ -3,7 +3,7 @@ import { WechatOutlined, DoubleLeftOutlined, DoubleRightOutlined } from '@ant-de
 import { Steps, Drawer, Tag, Select, Row, Col, Divider, Descriptions, Input, Button, message } from 'antd';
 import ProForm, { ProFormSelect, ProFormTextArea, ProFormDigit, ProFormText } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
-import { createCard } from '@/services/ant-design-pro/api';
+import { createCard, judgeCardIndex } from '@/services/ant-design-pro/api';
 import EditableTable from './cardAction/editableTable';
 
 const { Step } = Steps;
@@ -49,6 +49,26 @@ class AddDrawer extends Component {
         });
     }
 
+    judgeCardIndexUnique = async (index) => {
+        const msg = await judgeCardIndex({index: index});
+        return msg.data
+    }
+
+    // 踩坑记录： 不能直接在这个函数中调用后端接口，不能写async，否则函数不生效，why？
+    // 踩坑记录： judgeCardIndexUnique函数返回的是一个Promise对象，需要用then取出结果
+    handleConfirmCardIndex = (rule, value, callback) => {
+        this.judgeCardIndexUnique(value).then(
+            (result) => {
+                // console.log("result:", result);
+                if (result == false) {
+                    callback("This index already existed !");
+                    return;
+                }
+                callback();
+            }
+        )
+    }
+
     render() {
 
         return (
@@ -76,8 +96,17 @@ class AddDrawer extends Component {
                         key={Date.now()}
                     >
                         <ProFormText name="sprint" label="Sprint" disabled />
-                        <ProFormText name="index" label="Card Index" rules={[{ required: true, message: '这是必填项' }]} />
-                        <ProFormText name="title" label="Card Title" rules={[{ required: true, message: '这是必填项' }]} />
+                        <ProFormText 
+                            name="index" 
+                            label="Card Index" 
+                            rules={[
+                                { required: true, message: 'This is a mandatory field' },
+                                { validator: (rule, value, callback) => this.handleConfirmCardIndex(rule, value, callback) },
+                            ]}
+                            // 踩坑记录：validateTrigger={onblur} 这种写法是错误的，失焦不会触发校验
+                            validateTrigger="onBlur"
+                        />
+                        <ProFormText name="title" label="Card Title" rules={[{ required: true, message: 'This is a mandatory field' }]} />
                         <ProFormSelect 
                             options={[
                                 {
@@ -99,9 +128,9 @@ class AddDrawer extends Component {
                             ]}
                             name="type"
                             label="Card Type"
-                            rules={[{ required: true, message: '这是必填项' }]}
+                            rules={[{ required: true, message: 'This is a mandatory field' }]}
                         />
-                        <ProFormDigit name="point" label="Point" rules={[{ required: true, message: '这是必填项' }]} />
+                        <ProFormDigit name="point" label="Point" rules={[{ required: true, message: 'This is a mandatory field' }]} />
                         <ProFormTextArea name="ac" label="Acceptance Criteria" rows={8} />
                     </ProForm>
                 </Drawer>

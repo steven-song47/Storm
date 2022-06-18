@@ -2,7 +2,7 @@ import React, { Component, useRef } from 'react';
 import { Drawer, message } from 'antd';
 import ProForm, { StepsForm, ProFormDateRangePicker, ProFormTextArea, ProFormDigit, ProFormText } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
-import { selectMembers, createSprint } from '@/services/ant-design-pro/api';
+import { selectMembers, createSprint, judgeSprintName } from '@/services/ant-design-pro/api';
 
 
 class CreateSprintDrawer extends Component {
@@ -36,6 +36,26 @@ class CreateSprintDrawer extends Component {
             visibleDrawer: false,
         });
         this.props.refresh(this.state.newSprint);
+    }
+
+    judgeSprintNameUnique = async (name) => {
+        const msg = await judgeSprintName({sprint: name});
+        return msg.data
+    }
+
+    // 踩坑记录： 不能直接在这个函数中调用后端接口，不能写async，否则函数不生效，why？
+    // 踩坑记录： judgeCardIndexUnique函数返回的是一个Promise对象，需要用then取出结果
+    handleConfirmSprintName = (rule, value, callback) => {
+        this.judgeSprintNameUnique(value).then(
+            (result) => {
+                // console.log("result:", result);
+                if (result == false) {
+                    callback("This name already existed !");
+                    return;
+                }
+                callback();
+            }
+        )
     }
 
     render() {
@@ -93,7 +113,18 @@ class CreateSprintDrawer extends Component {
                                     return true;
                                 }}
                             >
-                                <ProFormText name="name" label="Sprint name" width="xl" tooltip="The sprint name must be unique" rules={[{ required: true }]}/>
+                                <ProFormText 
+                                    name="name" 
+                                    label="Sprint name" 
+                                    width="xl" 
+                                    tooltip="The sprint name must be unique" 
+                                    rules={[
+                                        { required: true, message: 'This is a mandatory field' },
+                                        { validator: (rule, value, callback) => this.handleConfirmSprintName(rule, value, callback) },
+                                    ]}
+                                    // 踩坑记录：validateTrigger={onblur} 这种写法是错误的，失焦不会触发校验
+                                    validateTrigger="onBlur"
+                                />
                                 <ProFormDateRangePicker name="dateTime" label="Sprint cycle" rules={[{ required: true }]}/>
                                 <ProForm.Group>
                                     <ProFormDigit name="storyCards" label="Estimate the number of story cards" rules={[{ required: true }]} />
