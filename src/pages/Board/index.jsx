@@ -52,7 +52,6 @@ class Board extends Component {
     }
 
     selectOptions = () => {
-        console.log("111")
         var options = [];
         var sprintList = [...this.state.sprints];
         sprintList&&sprintList.map((sprint) => 

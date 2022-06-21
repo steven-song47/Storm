@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Card} from 'antd';
+import { Card } from 'antd';
 
 
-class ProjectConfig extends Component {
+class Overview extends Component {
 
     render() {
         return (
@@ -15,4 +15,4 @@ class ProjectConfig extends Component {
     }
 }
 
-export default ProjectConfig;
+export default Overview;

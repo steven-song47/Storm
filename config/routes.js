@@ -53,9 +53,19 @@ export default [
     path: '/project',
     routes: [
       {
+        path: '/project/overview',
+        name: 'Project Overview',
+        component: './Overview',
+      },
+      {
         path: '/project/config',
         name: 'Project Config',
         component: './ProjectConfig',
+      },
+      {
+        path: '/project/member',
+        name: 'Member MGT',
+        component: './MemberManage',
       },
       {
         path: '/project/board',
@@ -63,39 +73,29 @@ export default [
         component: './Board',
       },
       {
-        path: '/project/auto',
-        name: 'Test Plan',
-        component: './Automation',
-      },
-      {
         path: '/project/sprint',
         name: 'Sprint Dashboard',
         component: './Dashboard',
       },
       {
-        path: '/project/member',
-        name: 'Member Management',
-        component: './MemberManage',
-      },
-      {
-        path: '/project/workflow',
-        name: 'Card Management',
-        component: './Project',
-      },
-      {
         path: '/project/case',
-        name: 'Case Management',
+        name: 'Case MGT',
         component: './CaseManage',
       },
       {
         path: '/project/bug',
-        name: 'Bug Management',
+        name: 'Bug MGT',
         component: './BugManage',
+      },
+      {
+        path: '/project/auto',
+        name: 'Test Plan',
+        component: './Automation',
       },
       {
         path: '/project/retro',
         name: 'Retro Actions',
-        component: './Project',
+        component: './Retro',
       },
     ],
   },

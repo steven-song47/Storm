@@ -56,7 +56,6 @@ function CaseTable(props) {
             create_time: editCase.create_time,
             update_time: editCase.update_time,
         };
-        console.log("before update:", updated_line);
         // findIndex不生效，why？
         // data_index = updated_data.findIndex((item) => item.id === updated_line.id);
         for (let i=0; i<updated_data.length; i++) {
@@ -65,7 +64,6 @@ function CaseTable(props) {
             }
         }
         setDataSource(updated_data);
-        console.log('after update:', updated_data);
     }
 
     const columns = [
