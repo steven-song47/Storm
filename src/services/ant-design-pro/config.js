@@ -40,3 +40,8 @@ export const CARD_POINT_CHART = '/api/dashboard/cardPoints';
 export const TREND_DATA_CHART = '/api/dashboard/trendData';
 export const BURNDOWN_CHART = '/api/dashboard/burnDownChart';
 export const FLOW_CHART = '/api/dashboard/cumulativeFlowChart';
+
+export const GET_PROJECTS = '/api/config/getProjects';
+export const GET_CONFIG = '/api/config/getProjectConfig';
+export const CREATE_PROJECT = '/api/config/createProject';
+export const UPDATE_PROJECT = '/api/config/updateProject';

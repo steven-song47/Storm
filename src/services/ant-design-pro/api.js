@@ -326,3 +326,34 @@ export async function sumFlowChart(params) {
     params: {...params},
   });
 }
+
+// config
+export async function getProjects(params) {
+  let url = CONFIG.GET_PROJECTS;
+  return request(url, {
+    method: 'GET',
+    params: {...params},
+  });
+}
+
+export async function getProjectConfig(params) {
+  let url = CONFIG.GET_CONFIG;
+  return request(url, {
+    method: 'GET',
+    params: {...params},
+  });
+}
+
+export async function createProject(params) {
+  let url = CONFIG.CREATE_PROJECT;
+  return post(url, {
+      params: {...params},
+  });
+}
+
+export async function updateProject(params) {
+  let url = CONFIG.UPDATE_PROJECT;
+  return post(url, {
+      params: {...params},
+  });
+}

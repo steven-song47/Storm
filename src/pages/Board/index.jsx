@@ -168,7 +168,7 @@ class Board extends Component {
                             </Form.Item>
                             <Form.Item >
                                 <Button htmlType="button" onClick={() => this.createSprint()} >
-                                    Create New Sprint
+                                    <PlusOutlined />Create New Sprint
                                 </Button>
                             </Form.Item>
                         </Form>
