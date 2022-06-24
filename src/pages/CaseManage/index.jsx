@@ -143,7 +143,6 @@ class CaseManage extends Component {
                 dataIndex: 'name',
                 key: 'name',
                 copyable: true,
-                hideInSearch: true,
                 width: 150,
                 fixed: 'left',
             },
@@ -151,11 +150,11 @@ class CaseManage extends Component {
                 title: 'Module',
                 dataIndex: 'module',
                 key: 'module',
-                hideInSearch: true,
                 width: 150,
             },
             {
                 title: 'Case content',
+                hideInSearch: true,
                 children: [
                     {
                         title: 'Given',
@@ -184,14 +183,12 @@ class CaseManage extends Component {
                 title: 'Review',
                 dataIndex: 'review',
                 key: 'review',
-                hideInSearch: true,
                 width: 150,
             },
             {
                 title: 'Level',
                 dataIndex: 'level',
                 key: 'level',
-                hideInSearch: true,
                 width: 100,
             },
             {
@@ -215,7 +212,6 @@ class CaseManage extends Component {
                 title: 'Auto',
                 dataIndex: 'auto',
                 key: 'auto',
-                hideInSearch: true,
                 width: 100,
             },
             {
@@ -227,6 +223,7 @@ class CaseManage extends Component {
             },
             {
                 title: 'Case associated',
+                hideInSearch: true,
                 children: [
                     {
                         title: 'Card',
