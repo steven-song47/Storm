@@ -4,6 +4,7 @@ import { PlusOutlined, EditOutlined, UsbTwoTone } from '@ant-design/icons';
 import ProCard from '@ant-design/pro-card';
 import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { getProjects, getProjectConfig, createProject, updateProject } from '@/services/ant-design-pro/api';
+import AddProject from './createProjectDrawer';
 
 
 class ProjectConfig extends Component {
@@ -17,18 +18,20 @@ class ProjectConfig extends Component {
             config: {}
         };
         this.formRef = React.createRef();
+        this.AddDrawer = React.createRef();
     }
     
     async componentWillMount() {
-        // const projects = await getProjects();
-        // await this.setState({
-        //     currentProject: projects.data[0],
-        //     projects: projects.data,
-        // });
-        // const msg = await getProjectConfig({project: this.state.currentProject});
-        // await this.setState({
-        //     config: msg.data,
-        // });
+        const projects = await getProjects();
+        await this.setState({
+            currentProject: projects.data[0],
+            projects: projects.data,
+        });
+        const msg = await getProjectConfig({project: this.state.currentProject});
+        await this.setState({
+            config: msg.data,
+        });
+        console.log(this.state.config);
     }
 
     editConfig = async () => {
@@ -47,7 +50,7 @@ class ProjectConfig extends Component {
     }
 
     createProject = () => {
-
+        this.AddDrawer.current.showAddDrawer();
     }
 
     switchButtonShow = () => {
@@ -85,6 +88,7 @@ class ProjectConfig extends Component {
                             </Button>
                         </Form.Item>
                     </Form>
+                    <AddProject ref={this.AddDrawer} />
                 </ProCard>
                 <br />
                 <ProCard>
@@ -93,8 +97,11 @@ class ProjectConfig extends Component {
                         formkey="edit-case"
                         layout="vertical"
                         formRef={this.formRef}
-                        request={() => {
+                        request={async () => {
+                            const msg = await getProjectConfig({project: this.state.currentProject});
                             return {
+                                name: msg.data.name,
+                                robot: msg.data.robot,
                                 basic_data: ['Point completion rate', 'Card completion rate'],
                                 extra_data: ['Point overflow rate', 'Commitment fulfillment rate', 'Good card rate', 'Tests cost points on average', 'Bugs', 'Left bugs', 'Test coverage', 'Regression test pass rate'],
                                 basic_chart: ['Burn down Chart', 'Cumulative Flow diagrams'],
@@ -108,7 +115,7 @@ class ProjectConfig extends Component {
                         <ProFormText 
                             name="name" 
                             label="Name" 
-                            disabled={this.state.editable}
+                            disabled
                             rules={[{ required: true, message: 'This is a request field' }]}
                         />
                         <ProFormText name="robot" label="WeChat Robot URL" disabled={this.state.editable} />
