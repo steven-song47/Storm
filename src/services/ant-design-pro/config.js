@@ -33,6 +33,7 @@ export const CREATE_CARD = '/api/board/createCard';
 export const CREATE_SPRINT = '/api/board/createSprint';
 export const JUDGE_SPRINT = '/api/board/judgeSprintName';
 export const JUDGE_INDEX = '/api/board/judgeCardIndex';
+export const GET_CARDS = '/api/board/getAllCards';
 
 export const DASHBOARD_BASIC = '/api/dashboard/dashboard';
 export const MEMBER_POINT_CHART = '/api/dashboard/memberPoints';

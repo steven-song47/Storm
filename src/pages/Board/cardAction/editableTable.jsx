@@ -175,6 +175,7 @@ function EditableTable(props) {
             maxLength={20} 
             recordCreatorProps={{
                 position: 'end',
+                creatorButtonText: 'Create a new line',
                 record: add(),
             }}
             columns={chooseColumns()} 

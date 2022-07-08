@@ -51,7 +51,7 @@ export async function test(params) {
   });
 }
 
-export async function getCards(params) {
+export async function getCards1(params) {
   let url = CONFIG.SEARCH_CARDS;
   return request(url, {
     method: 'GET',
@@ -272,6 +272,14 @@ export async function judgeSprintName(params) {
 
 export async function judgeCardIndex(params) {
   let url = CONFIG.JUDGE_INDEX;
+  return request(url, {
+    method: 'GET',
+    params: {...params},
+  });
+}
+
+export async function getCards(params) {
+  let url = CONFIG.GET_CARDS;
   return request(url, {
     method: 'GET',
     params: {...params},

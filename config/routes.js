@@ -83,11 +83,6 @@ export default [
         component: './CaseManage',
       },
       {
-        path: '/project/bug',
-        name: 'Bug MGT',
-        component: './BugManage',
-      },
-      {
         path: '/project/auto',
         name: 'Test Plan',
         component: './Automation',

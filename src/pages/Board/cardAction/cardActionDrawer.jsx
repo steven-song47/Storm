@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { WechatOutlined, DoubleLeftOutlined, DoubleRightOutlined } from '@ant-design/icons';
+import { WechatOutlined, DoubleLeftOutlined, DoubleRightOutlined, PlusOutlined } from '@ant-design/icons';
 import { Steps, Drawer, Tag, Select, Row, Col, Divider, Descriptions, Input, Button, Timeline, Modal, Alert, Table, message } from 'antd';
 import ProForm, { ProFormSelect, ProFormTextArea } from '@ant-design/pro-form';
 import ProTable from '@ant-design/pro-table';
@@ -9,6 +9,7 @@ import EditableTable from './editableTable';
 import CaseTable from './caseTable';
 import AddCaseModal from './addCaseModal';
 import ImportCaseModal from './importCaseModel';
+import ImportCardModal from './importCardModel';
 
 const { Step } = Steps;
 const { TextArea } = Input;
@@ -66,6 +67,7 @@ class ActionDrawer extends Component {
 
     addCaseRef = React.createRef();
     importCaseRef = React.createRef();
+    importCardRef = React.createRef();
 
     showActionDrawer = async (cardIndex) => {
         const msg = await openCard({index: cardIndex})
@@ -305,6 +307,11 @@ class ActionDrawer extends Component {
         this.importCaseRef.current.showImportModal();
     }
 
+    // 调用子组件中的方法打开import card的modal
+    openImportCardModal = () => {
+        this.importCardRef.current.showImportModal();
+    }
+
     render() {
 
         const showHealthTag = () => {
@@ -399,6 +406,50 @@ class ActionDrawer extends Component {
             }
         }
 
+        const CardColumns = [
+            {
+                title: 'Index',
+                dataIndex: 'index',
+                key: 'index',
+            },
+            {
+                title: 'Title',
+                dataIndex: 'title',
+                key: 'title',
+            },
+            {
+                title: 'Type',
+                dataIndex: 'type',
+                key: 'type',
+            },
+            {
+                title: 'Dev',
+                dataIndex: 'dev',
+                key: 'dev',
+            },
+            {
+                title: 'QA',
+                dataIndex: 'qa',
+                key: 'qa',
+            },
+            {
+                title: 'State',
+                dataIndex: 'state',
+                key: 'state',
+            },
+            {
+                title: 'Action',
+                valueType: 'option',
+                fixed: 'right',
+                width: 100,
+                render: (text, record, _, action) => [
+                    <a href="javascript:;" key="edit">
+                        <EditTwoTone />
+                    </a>,
+                ],
+            },
+        ]
+
         return (
             <div>
                 <Drawer
@@ -418,6 +469,7 @@ class ActionDrawer extends Component {
                                     <Descriptions.Item label="Point">{this.state.openCardData.point}</Descriptions.Item>
                                     <Descriptions.Item label="Type">{this.state.openCardData.type}</Descriptions.Item>
                                     <Descriptions.Item label="Health">{showHealthTag()}</Descriptions.Item>
+                                    <Descriptions.Item label="Original link"></Descriptions.Item>
                                 </Descriptions>
                                 <br />
                                 <Row>
@@ -521,6 +573,44 @@ class ActionDrawer extends Component {
                             </Row>
                             <br />
                             {NotificationGhost()}
+                            <Divider orientation="left">Associated Cards</Divider>
+                            <ProTable
+                                rowKey="id"
+                                scroll={{ x: 1000, }}
+                                search={false}
+                                options={false}
+                                columns={CardColumns}
+                                // dataSource={dataSource}
+                                pagination={false}
+                                // request={async () => {
+                                //     return {data: props.data}
+                                // }}
+                            />
+                            <Button type="dashed" onClick={() => this.openImportCardModal()} block>
+                                <PlusOutlined />Create a new association
+                            </Button>
+                            <ImportCardModal
+                                ref={this.importCardRef}
+                                index={this.state.openCardData.index}
+                            />
+                        </ProCard>
+                        <ProCard colSpan={12}>
+                            <Divider orientation="left">Quality Risk</Divider>
+                            <EditableTable 
+                                key={this.state.openCardData.index + "risk"} 
+                                type="risk" 
+                                data={this.state.openCardData.risk}
+                                handle={(data)=>{this.updateCardRisk(data)}}
+                            />
+                            <br />
+                            <Divider orientation="left">Task List</Divider>
+                            <EditableTable 
+                                key={this.state.openCardData.index + "task"} 
+                                type="task" 
+                                data={this.state.openCardData.task}
+                                handle={(data)=>{this.updateCardTask(data)}}
+                            />
+                            <br />
                             <Divider orientation="left">Case List</Divider>
                             <Row>
                                 <Col span={5} offset={18}>
@@ -535,7 +625,7 @@ class ActionDrawer extends Component {
                                 handle={(data)=>{this.updateCaseData(data)}}
                             />
                             <Button type="dashed" onClick={() => this.openAddCaseModal()} block>
-                                + Add a new line
+                                <PlusOutlined />Create a new case
                             </Button>
                             <br />
                             <AddCaseModal 
@@ -548,32 +638,6 @@ class ActionDrawer extends Component {
                                 index={this.state.openCardData.index}
                                 updateCase={this.updateCaseTable}
                             />
-                        </ProCard>
-                        <ProCard colSpan={12}>
-                            <Divider orientation="left">Quality Risk</Divider>
-                            <EditableTable 
-                                key={this.state.openCardData.index + "risk"} 
-                                type="risk" 
-                                data={this.state.openCardData.risk}
-                                handle={(data)=>{this.updateCardRisk(data)}}
-                            />
-                            <br />
-                            <Divider orientation="left">Bug List</Divider>
-                            <EditableTable
-                                key={this.state.openCardData.index + "bug"} 
-                                type="bug" 
-                                data={this.state.openCardData.bug}
-                                handle={(data)=>{this.updateCardBug(data)}}
-                            />
-                            <br />
-                            <Divider orientation="left">Task List</Divider>
-                            <EditableTable 
-                                key={this.state.openCardData.index + "task"} 
-                                type="task" 
-                                data={this.state.openCardData.task}
-                                handle={(data)=>{this.updateCardTask(data)}}
-                            />
-                            <br />
                         </ProCard>
                     </ProCard>
                 </Drawer>

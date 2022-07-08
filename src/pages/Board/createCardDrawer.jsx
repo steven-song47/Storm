@@ -132,6 +132,7 @@ class AddDrawer extends Component {
                         />
                         <ProFormDigit name="point" label="Point" rules={[{ required: true, message: 'This is a mandatory field' }]} />
                         <ProFormTextArea name="ac" label="Acceptance Criteria" rows={8} />
+                        <ProFormText name="original" label="Original Link" />
                     </ProForm>
                 </Drawer>
             </div>
