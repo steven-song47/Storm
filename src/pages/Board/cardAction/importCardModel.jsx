@@ -22,7 +22,7 @@ function ImportCardModel(props, ref){
 
     const handleOk = () => {
         setIsModalVisible(false);
-        // props.updateCase(data);
+        props.updateAssociation(data);
     };
 
     const handleCancel = () => {
@@ -92,24 +92,8 @@ function ImportCardModel(props, ref){
                     selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
                     defaultSelectedRowKeys: [1],
                     onChange: (selectedRowKeys, selectedRows) => {
-                        console.log(selectedRows);
-                        // var import_data = [];
-                        // for (let i=0; i<selectedRows.length; i++) {
-                        //     var current_case = {...selectedRows[i]};
-                        //     var origin_card = current_case.card;
-                        //     if (origin_card) {
-                        //         var card_list = origin_card.split(",");
-                        //         if (!card_list.includes(props.index.toString())) {
-                        //             card_list.push(props.index.toString());
-                        //             current_case.card = card_list.join(",");
-                        //             import_data.push(current_case);
-                        //         }
-                        //     } else {
-                        //         current_case.card = props.index.toString();
-                        //         import_data.push(current_case);
-                        //     }
-                        // }
-                        // setData(import_data);
+                        console.log("select in modal:", selectedRows);
+                        setData(selectedRows);
                     }
                 }}
             />

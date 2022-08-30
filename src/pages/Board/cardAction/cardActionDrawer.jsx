@@ -6,6 +6,7 @@ import ProTable from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { openCard, selectMembers, sendNotificationByWechat, switchStep, displayLog, updateCard, searchCases } from '@/services/ant-design-pro/api';
 import EditableTable from './editableTable';
+import CardTable from './cardTable';
 import CaseTable from './caseTable';
 import AddCaseModal from './addCaseModal';
 import ImportCaseModal from './importCaseModel';
@@ -56,6 +57,8 @@ class ActionDrawer extends Component {
             updateCaseTime: "",
             checkboxTable: 0,
             changeCaseTableKey: 0,
+            currentAssociation: [],
+            updateCardTime: "",
         };
     }
 
@@ -237,8 +240,8 @@ class ActionDrawer extends Component {
             // case: this.state.tmpCase,
             case: this.state.currentCases,
             risk: this.state.tmpRisk,
-            bug: this.state.tmpBug,
             task: this.state.tmpTask,
+            card: this.state.currentAssociation,
         })
     }
 
@@ -310,6 +313,34 @@ class ActionDrawer extends Component {
     // 调用子组件中的方法打开import card的modal
     openImportCardModal = () => {
         this.importCardRef.current.showImportModal();
+    }
+
+    // 用于子组件card table中数据更新后（delete），更新currentAssociation的数据
+    // updateCardData = (data) => {
+    //     this.setState({
+    //         currentAssociation: data,
+    //     });
+    // }
+
+    // 用在子组件（add）中更新card table的数据
+    updateCardTable = (cards) => {
+        console.log("outside modal:", cards)
+        // var current_cards = this.state.currentAssociation;
+        // for (let i=0; i<cards.length; i++) {
+        //     if (cards[i].index )
+        //     current_cards.push({
+        //        index: cards[i].index,
+        //        title: cards[i].title,
+        //        type: cards[i].type,
+        //        dev: cards[i].dev,
+        //        qa: cards[i].qa,
+        //        state: cards[i].state,
+        //     });
+        // }
+        this.setState({
+            currentAssociation: cards,
+            updateCardTime: Date.now(),
+        })
     }
 
     render() {
@@ -405,50 +436,6 @@ class ActionDrawer extends Component {
                 )
             }
         }
-
-        const CardColumns = [
-            {
-                title: 'Index',
-                dataIndex: 'index',
-                key: 'index',
-            },
-            {
-                title: 'Title',
-                dataIndex: 'title',
-                key: 'title',
-            },
-            {
-                title: 'Type',
-                dataIndex: 'type',
-                key: 'type',
-            },
-            {
-                title: 'Dev',
-                dataIndex: 'dev',
-                key: 'dev',
-            },
-            {
-                title: 'QA',
-                dataIndex: 'qa',
-                key: 'qa',
-            },
-            {
-                title: 'State',
-                dataIndex: 'state',
-                key: 'state',
-            },
-            {
-                title: 'Action',
-                valueType: 'option',
-                fixed: 'right',
-                width: 100,
-                render: (text, record, _, action) => [
-                    <a href="javascript:;" key="edit">
-                        <EditTwoTone />
-                    </a>,
-                ],
-            },
-        ]
 
         return (
             <div>
@@ -574,24 +561,19 @@ class ActionDrawer extends Component {
                             <br />
                             {NotificationGhost()}
                             <Divider orientation="left">Associated Cards</Divider>
-                            <ProTable
-                                rowKey="id"
-                                scroll={{ x: 1000, }}
-                                search={false}
-                                options={false}
-                                columns={CardColumns}
-                                // dataSource={dataSource}
-                                pagination={false}
-                                // request={async () => {
-                                //     return {data: props.data}
-                                // }}
+                            <CardTable 
+                                key={this.state.openCardData.index + "card" + this.state.updateCardTime} 
+                                data={this.state.currentAssociation} 
+                                index={this.state.openCardData.index}
+                                // handle={(data)=>{this.updateCaseTable(data)}}
                             />
                             <Button type="dashed" onClick={() => this.openImportCardModal()} block>
-                                <PlusOutlined />Create a new association
+                                Create or Remove association cards
                             </Button>
                             <ImportCardModal
                                 ref={this.importCardRef}
                                 index={this.state.openCardData.index}
+                                updateAssociation={this.updateCardTable}
                             />
                         </ProCard>
                         <ProCard colSpan={12}>
