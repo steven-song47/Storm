@@ -83,6 +83,7 @@ class ActionDrawer extends Component {
             currentState: msg.data.state,
             saveButton: false,
             currentCases: msg.data.case,
+            currentAssociation: msg.data.card,
         });
         // 【遗留问题】关于设置currentCases: msg.data.case的实际数据 != this.state.openCardData.case的数据，这是为什么呢？
         // await this.setState({
@@ -315,28 +316,9 @@ class ActionDrawer extends Component {
         this.importCardRef.current.showImportModal();
     }
 
-    // 用于子组件card table中数据更新后（delete），更新currentAssociation的数据
-    // updateCardData = (data) => {
-    //     this.setState({
-    //         currentAssociation: data,
-    //     });
-    // }
-
     // 用在子组件（add）中更新card table的数据
     updateCardTable = (cards) => {
-        console.log("outside modal:", cards)
-        // var current_cards = this.state.currentAssociation;
-        // for (let i=0; i<cards.length; i++) {
-        //     if (cards[i].index )
-        //     current_cards.push({
-        //        index: cards[i].index,
-        //        title: cards[i].title,
-        //        type: cards[i].type,
-        //        dev: cards[i].dev,
-        //        qa: cards[i].qa,
-        //        state: cards[i].state,
-        //     });
-        // }
+        // console.log("outside modal:", cards)
         this.setState({
             currentAssociation: cards,
             updateCardTime: Date.now(),
@@ -565,10 +547,9 @@ class ActionDrawer extends Component {
                                 key={this.state.openCardData.index + "card" + this.state.updateCardTime} 
                                 data={this.state.currentAssociation} 
                                 index={this.state.openCardData.index}
-                                // handle={(data)=>{this.updateCaseTable(data)}}
                             />
                             <Button type="dashed" onClick={() => this.openImportCardModal()} block>
-                                Create or Remove association cards
+                                <PlusOutlined />Create association cards
                             </Button>
                             <ImportCardModal
                                 ref={this.importCardRef}

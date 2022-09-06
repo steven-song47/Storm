@@ -16,10 +16,6 @@ function ImportCardModel(props, ref){
         }
     }))
 
-    // const showAddModal = () => {
-    //     setIsModalVisible(true);
-    // };
-
     const handleOk = () => {
         setIsModalVisible(false);
         props.updateAssociation(data);
@@ -86,11 +82,20 @@ function ImportCardModel(props, ref){
                 search={false}
                 request={async (params={}, sort, filter) => {
                     const msg = await getCards(params);
-                    return {data: msg.data}
+                    var new_data = [];
+                    for (let i=0; i<msg.data.length; i++) {
+                        var row_data = msg.data[i];
+                        row_data.key = i+1;
+                        new_data.push(row_data);
+                    }
+                    console.log("new_data:", new_data);
+                    return {data: new_data}
                 }}
                 rowSelection={{
                     selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
+                    // Antd踩坑: defaultSelectedRowKeys设置不生效
                     defaultSelectedRowKeys: [1],
+                    checkStrictly: true,
                     onChange: (selectedRowKeys, selectedRows) => {
                         console.log("select in modal:", selectedRows);
                         setData(selectedRows);

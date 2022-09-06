@@ -10,10 +10,6 @@ function CardTable(props) {
 
     const formRef = useRef();
 
-    // useEffect(() => {
-    //     props.handle(dataSource);
-    // }, [dataSource]);
-
     const CardColumns = [
         {
             title: 'Index',
@@ -45,17 +41,6 @@ function CardTable(props) {
             dataIndex: 'state',
             key: 'state',
         },
-        // {
-        //     title: 'Action',
-        //     valueType: 'option',
-        //     fixed: 'right',
-        //     width: 100,
-        //     render: (text, record, _, action) => [
-        //         <a href="javascript:;" key="del">
-        //             <EditTwoTone />
-        //         </a>,
-        //     ],
-        // },
     ]
     
     return (<>
