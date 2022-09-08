@@ -30,11 +30,13 @@ function CardTable(props) {
             title: 'Dev',
             dataIndex: 'dev',
             key: 'dev',
+            render: (members) => members.toString()
         },
         {
             title: 'QA',
             dataIndex: 'qa',
             key: 'qa',
+            render: (members) => members.toString()
         },
         {
             title: 'State',

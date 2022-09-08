@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Avatar, Badge } from 'antd';
+import { Row, Col, Avatar, Badge, Tag } from 'antd';
 import { BulbTwoTone, BugTwoTone, PushpinTwoTone, CarryOutTwoTone, UserOutlined, EditOutlined } from '@ant-design/icons';
 import ProCard from '@ant-design/pro-card';
 
@@ -45,15 +45,15 @@ function USCard(props) {
         var assigned;
         var col = props.column;
         if (col === "Testing" || col === "Closed") {
-            if ("qa" in props.data) {
-                assigned = props.data.qa;
+            if (props.data.qa.length) {
+                assigned = props.data.qa.toString();
             } else {
                 assigned = "Unassigned";
             }
             
         } else {
-            if ("dev" in props.data) {
-                assigned = props.data.dev;
+            if (props.data.dev.length) {
+                assigned = props.data.dev.toString();
             } else {
                 assigned = "Unassigned";
             }
@@ -73,8 +73,9 @@ function USCard(props) {
                 onClick={openCard}
             >
                 <Row>
-                    <Col span={6}>{getData("icon")}</Col>
-                    <Col span={8}>{props.data.index}</Col>
+                    <Col span={4}>{getData("icon")}</Col>
+                    <Col span={10}><Tag color="blue">Points:{props.data.point}</Tag></Col>
+                    <Col span={10}>{props.data.index}</Col>
                 </Row>
                 <Row>
                 <Col span={24}>{props.data.title}</Col> 
@@ -82,8 +83,8 @@ function USCard(props) {
                 <br />
                 <Row>
                     <Col span={6}><Avatar icon={<UserOutlined />} /></Col>
-                    <Col span={16}>{getAssigned()}</Col>
-                    <Col span={2}>{props.data.point}</Col>
+                    <Col span={18}>{getAssigned()}</Col>
+                    {/* <Col span={2}>{props.data.point}</Col> */}
                 </Row>
             </ProCard>
         </Badge.Ribbon>

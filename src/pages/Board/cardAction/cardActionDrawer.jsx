@@ -204,6 +204,7 @@ class ActionDrawer extends Component {
     }
 
     switchDevMember = (member) => {
+        console.log(member);
         this.setState({
             cardDev: member,
         });
@@ -448,7 +449,7 @@ class ActionDrawer extends Component {
                                     <Col span={18}>
                                         <Select
                                             key={this.state.openCardData.index + "dev"}
-                                            // mode="multiple"
+                                            mode="multiple"
                                             allowClear
                                             style={{width: '100%'}}
                                             onChange={this.switchDevMember}
