@@ -41,12 +41,18 @@ export default [
       },
     ],
   },
-  // {
-  //   name: 'Security Testing',
-  //   icon: 'table',
-  //   path: '/dependency',
-  //   component: './Dependency',
-  // },
+  {
+    name: 'Online Monitor',
+    icon: 'monitor',
+    path: '/monitor',
+    routes: [
+      {
+        path: '/monitor/interface',
+        name: 'API Monitor',
+        component: './Monitor',
+      },
+    ],
+  },
   {
     name: 'Project Management',
     icon: 'project',
